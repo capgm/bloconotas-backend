@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +16,8 @@ import com.charles.bloconotas.repository.NotaRepository;
 import com.charles.bloconotas.repository.UsuarioRepository;
 import com.charles.bloconotas.web.dto.mapper.NotaMapper;
 import com.charles.bloconotas.web.dto.nota.NotaCreateDto;
+
+import jakarta.validation.Valid;
 
 @Service
 public class NotaService {
@@ -39,6 +43,23 @@ public class NotaService {
 	public List<Nota> findAll() {
 		
 		return notaRepository.findAll();
+	}
+
+	@Transactional
+	public ResponseEntity<Nota> update(Long id, @Valid NotaCreateDto notaCreateDto) {
+		
+		Nota nota = NotaMapper.toNota(notaCreateDto);
+		nota.setId(id);
+		
+		return  ResponseEntity.status(HttpStatus.NO_CONTENT).body(nota);
+	}
+	
+
+	@Transactional
+	public ResponseEntity<?> delete(Long id) {
+			notaRepository.deleteById(id);
+			
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
 }

@@ -6,4 +6,5 @@ import com.charles.bloconotas.entity.Nota;
 
 public interface NotaRepository extends JpaRepository<Nota, Long> {
 
+
 }

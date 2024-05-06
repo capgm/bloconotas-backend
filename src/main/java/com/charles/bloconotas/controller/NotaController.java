@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,10 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.charles.bloconotas.entity.Nota;
 import com.charles.bloconotas.service.NotaService;
 import com.charles.bloconotas.web.dto.mapper.NotaMapper;
-import com.charles.bloconotas.web.dto.mapper.UsuarioMapper;
 import com.charles.bloconotas.web.dto.nota.NotaCreateDto;
 import com.charles.bloconotas.web.dto.nota.NotaResponseDto;
-import com.charles.bloconotas.web.dto.usuario.UsuarioCreateDto;
 
 import jakarta.validation.Valid;
 
@@ -44,5 +45,16 @@ public class NotaController {
 		List<Nota> notas = notaService.findAll();
 
 		return ResponseEntity.ok(NotaMapper.toListDto(notas));
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<Nota> update(@Valid @RequestBody NotaCreateDto notaCreateDto, @PathVariable("id") Long id) {
+		return notaService.update(id, notaCreateDto);
+	}
+		
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable("id") Long id) {		
+
+		return notaService.delete(id);
 	}
 }

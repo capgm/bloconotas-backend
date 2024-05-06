@@ -6,21 +6,23 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 
 import com.charles.bloconotas.entity.Nota;
+import com.charles.bloconotas.web.dto.nota.NotaCreateDto;
 import com.charles.bloconotas.web.dto.nota.NotaResponseDto;
 import com.charles.bloconotas.web.dto.usuario.UsuarioCreateDto;
 
 public class NotaMapper {
 
-	public static Nota toNota(UsuarioCreateDto usuarioCreateDto) {
-		return new ModelMapper().map(usuarioCreateDto, Nota.class);
+	public static Nota toNota(NotaCreateDto notaCreateDto) {
+		return new ModelMapper().map(notaCreateDto, Nota.class);
 	}
 
-	public static NotaResponseDto toDto(Nota usuario) {
+	public static NotaResponseDto toDto(Nota nota) {
 
 		ModelMapper mapper = new ModelMapper();
-		return mapper.map(usuario, NotaResponseDto.class);
+		return mapper.map(nota, NotaResponseDto.class);
 	}
 
+	
 	public static List<NotaResponseDto> toListDto(List<Nota> notas) {
 
 		return notas.stream().map(nota -> toDto(nota)).collect(Collectors.toList());

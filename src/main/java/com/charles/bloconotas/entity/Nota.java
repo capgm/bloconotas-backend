@@ -18,6 +18,9 @@ public class Nota {
 	@Column(name = "id")
 	private Long id;
 	
+	@Column(name = "titulo", nullable = false, length = 200)
+	private String titulo;
+	
 	@Column(name = "anotacao", nullable = false, length = 1000)
 	private String anotacao;
 	
@@ -47,6 +50,14 @@ public class Nota {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}	
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public Nota(Long id, String anotacao, Usuario usuario) {

@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.charles.bloconotas.jwt.JwtToken;
 import com.charles.bloconotas.jwt.JwtUserDetailsService;
 import com.charles.bloconotas.web.dto.usuario.UsuarioLoginDto;
+import com.charles.bloconotas.web.dto.usuario.UsuarioResponseLoginDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -30,7 +34,7 @@ public class AutenticacaoController {
 
 	@PostMapping("/auth")
 	public ResponseEntity<?> autenticar(@RequestBody @Valid UsuarioLoginDto usuarioLoginDto,
-			HttpServletRequest request) {
+			HttpServletRequest request) throws JsonProcessingException {
 		try {
 			UsernamePasswordAuthenticationToken authenticationToken = 
 					new UsernamePasswordAuthenticationToken(usuarioLoginDto.getUsername(), usuarioLoginDto.getPassword());
@@ -39,7 +43,15 @@ public class AutenticacaoController {
 			
 			JwtToken token = detailService.getTokenAuthenticatesd(usuarioLoginDto.getUsername());
 			
-			return ResponseEntity.ok(token);
+
+			
+			UsuarioResponseLoginDto responseLoginDto = new UsuarioResponseLoginDto(usuarioLoginDto.getUsername().toString(), token.getToken());
+//			
+//			ObjectMapper objectMapper = new ObjectMapper();
+//			
+//			String json = objectMapper.writeValueAsString(responseLoginDto);
+			
+			return ResponseEntity.ok(responseLoginDto);
 			
 		}catch (AuthenticationException e) {
 			return ResponseEntity

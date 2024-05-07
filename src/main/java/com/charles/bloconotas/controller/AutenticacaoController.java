@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.charles.bloconotas.entity.Usuario;
 import com.charles.bloconotas.jwt.JwtToken;
 import com.charles.bloconotas.jwt.JwtUserDetailsService;
+import com.charles.bloconotas.service.UsuarioService;
 import com.charles.bloconotas.web.dto.usuario.UsuarioLoginDto;
 import com.charles.bloconotas.web.dto.usuario.UsuarioResponseLoginDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +32,8 @@ public class AutenticacaoController {
 	@Autowired
 	private JwtUserDetailsService detailService;
 	@Autowired
+	private UsuarioService usuarioService;
+	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("/auth")
@@ -43,9 +47,9 @@ public class AutenticacaoController {
 			
 			JwtToken token = detailService.getTokenAuthenticatesd(usuarioLoginDto.getUsername());
 			
-
+			Usuario usuario = usuarioService.buscarPorUsername(usuarioLoginDto.getUsername());
 			
-			UsuarioResponseLoginDto responseLoginDto = new UsuarioResponseLoginDto(usuarioLoginDto.getUsername().toString(), token.getToken());
+			UsuarioResponseLoginDto responseLoginDto = new UsuarioResponseLoginDto(usuarioLoginDto.getUsername().toString(), token.getToken(), usuario.getNome());
 //			
 //			ObjectMapper objectMapper = new ObjectMapper();
 //			

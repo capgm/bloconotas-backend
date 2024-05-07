@@ -40,10 +40,10 @@ public class NotaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(NotaMapper.toDto(nota));
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<NotaResponseDto>> findAll() {
+	@GetMapping("/usuario/{username}")
+	public ResponseEntity<List<NotaResponseDto>> findAll(@PathVariable("username") String username) {
 
-		List<Nota> notas = notaService.findAll();
+		List<Nota> notas = notaService.findNotasByUsuario(username);
 
 		return ResponseEntity.ok(NotaMapper.toListDto(notas));
 	}

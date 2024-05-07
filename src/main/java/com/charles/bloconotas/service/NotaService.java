@@ -68,4 +68,11 @@ public class NotaService {
 		return notaRepository.findById(id);
 	}
 
+	@Transactional(readOnly = true)
+	public List<Nota> findNotasByUsuario(String username) {
+		
+		
+		return notaRepository.findNotasByUsuario(username);
+	}
+
 }

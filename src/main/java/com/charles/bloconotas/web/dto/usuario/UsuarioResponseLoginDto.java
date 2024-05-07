@@ -5,6 +5,8 @@ public class UsuarioResponseLoginDto {
 
 	private String username;
 	
+	private String nome;
+	
 	private String token;
 
 	public String getUsername() {
@@ -21,12 +23,21 @@ public class UsuarioResponseLoginDto {
 
 	public void setToken(String token) {
 		this.token = token;
+	}	
+	
+	public String getNome() {
+		return nome;
 	}
 
-	public UsuarioResponseLoginDto(String username, String token) {
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public UsuarioResponseLoginDto(String username, String token, String nome) {
 		super();
 		this.username = username;
 		this.token = token;
+		this.nome = nome;
 	}
 
 	public UsuarioResponseLoginDto() {

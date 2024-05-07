@@ -62,4 +62,10 @@ public class NotaService {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
+	@Transactional(readOnly = true)
+	public Optional<Nota> findById(Long id) {
+		
+		return notaRepository.findById(id);
+	}
+
 }

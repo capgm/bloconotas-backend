@@ -1,6 +1,7 @@
 package com.charles.bloconotas.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,15 @@ public class NotaController {
 		List<Nota> notas = notaService.findAll();
 
 		return ResponseEntity.ok(NotaMapper.toListDto(notas));
+	}
+	
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+
+		Optional<Nota> nota = notaService.findById(id);
+
+		return ResponseEntity.ok(nota.get());
 	}
 	
 	@PutMapping("/{id}")

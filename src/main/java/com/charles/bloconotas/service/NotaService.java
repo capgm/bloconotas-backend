@@ -16,6 +16,7 @@ import com.charles.bloconotas.repository.NotaRepository;
 import com.charles.bloconotas.repository.UsuarioRepository;
 import com.charles.bloconotas.web.dto.mapper.NotaMapper;
 import com.charles.bloconotas.web.dto.nota.NotaCreateDto;
+import com.charles.bloconotas.web.dto.nota.NotaUpdateDto;
 
 import jakarta.validation.Valid;
 
@@ -46,9 +47,13 @@ public class NotaService {
 	}
 
 	@Transactional
-	public ResponseEntity<Nota> update(Long id, @Valid NotaCreateDto notaCreateDto) {
+	public ResponseEntity<Nota> update(Long id, NotaUpdateDto notaUpdateDto) {
 		
-		Nota nota = NotaMapper.toNota(notaCreateDto);
+		Nota nota = findById(id).get(); 
+
+		nota.setTitulo(notaUpdateDto.getTitulo());
+		nota.setAnotacao(notaUpdateDto.getAnotacao());
+		
 		nota.setId(id);
 		
 		return  ResponseEntity.status(HttpStatus.NO_CONTENT).body(nota);

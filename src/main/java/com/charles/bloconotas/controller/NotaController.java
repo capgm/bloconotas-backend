@@ -21,6 +21,7 @@ import com.charles.bloconotas.service.NotaService;
 import com.charles.bloconotas.web.dto.mapper.NotaMapper;
 import com.charles.bloconotas.web.dto.nota.NotaCreateDto;
 import com.charles.bloconotas.web.dto.nota.NotaResponseDto;
+import com.charles.bloconotas.web.dto.nota.NotaUpdateDto;
 
 import jakarta.validation.Valid;
 
@@ -50,7 +51,7 @@ public class NotaController {
 	
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+	public ResponseEntity<Nota> findById(@PathVariable("id") Long id) {
 
 		Optional<Nota> nota = notaService.findById(id);
 
@@ -58,8 +59,8 @@ public class NotaController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Nota> update(@Valid @RequestBody NotaCreateDto notaCreateDto, @PathVariable("id") Long id) {
-		return notaService.update(id, notaCreateDto);
+	public ResponseEntity<Nota> update(@Valid @RequestBody NotaUpdateDto notaUpdateDto, @PathVariable("id") Long id) {
+		return notaService.update(id, notaUpdateDto);
 	}
 		
 	@DeleteMapping("/{id}")

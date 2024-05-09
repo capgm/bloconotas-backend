@@ -2,7 +2,9 @@ package com.charles.bloconotas.web.dto.nota;
 
 public class NotaResponseDto {
 	
-	private Long id;
+	private Long id;	
+	
+	private String titulo;
 	
 	private String anotacao;
 
@@ -20,6 +22,14 @@ public class NotaResponseDto {
 
 	public void setAnotacao(String anotacao) {
 		this.anotacao = anotacao;
+	}	
+	
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 
 	public NotaResponseDto(Long id, String anotacao) {

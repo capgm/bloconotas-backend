@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.charles.bloconotas.entity.Usuario;
+import com.charles.bloconotas.jwt.JwtToken;
+import com.charles.bloconotas.jwt.JwtUserDetailsService;
 import com.charles.bloconotas.service.UsuarioService;
 import com.charles.bloconotas.web.dto.mapper.UsuarioMapper;
 import com.charles.bloconotas.web.dto.usuario.UsuarioCreateDto;
 import com.charles.bloconotas.web.dto.usuario.UsuarioResponseDto;
+import com.charles.bloconotas.web.dto.usuario.UsuarioResponseLoginDto;
 
 import jakarta.validation.Valid;
 
@@ -26,14 +31,35 @@ import jakarta.validation.Valid;
 public class UsuarioController {
 
 	@Autowired
-	UsuarioService usuarioService;
+	private JwtUserDetailsService detailService;
+	@Autowired
+	private UsuarioService usuarioService;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 	@PostMapping
-	public ResponseEntity<UsuarioResponseDto> create(@Valid @RequestBody UsuarioCreateDto usuarioCreateDto) {
+	public ResponseEntity<UsuarioResponseLoginDto> create(@Valid @RequestBody UsuarioCreateDto usuarioCreateDto) {
 
 		Usuario user = usuarioService.salvar(UsuarioMapper.toUsuario(usuarioCreateDto));
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(user));
+		//return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDto(user));
+		
+		UsernamePasswordAuthenticationToken authenticationToken = 
+				new UsernamePasswordAuthenticationToken(usuarioCreateDto.getUsername(), usuarioCreateDto.getPassword());
+		
+		authenticationManager.authenticate(authenticationToken);
+		
+		JwtToken token = detailService.getTokenAuthenticatesd(usuarioCreateDto.getUsername());
+		
+		Usuario usuario = usuarioService.buscarPorUsername(usuarioCreateDto.getUsername());
+		
+		UsuarioResponseLoginDto responseLoginDto = new UsuarioResponseLoginDto(usuarioCreateDto.getUsername().toString(), token.getToken(), usuario.getNome());
+//		
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		
+//		String json = objectMapper.writeValueAsString(responseLoginDto);
+		
+		return ResponseEntity.ok(responseLoginDto);
 	}
 	
 	@GetMapping
